@@ -67,25 +67,25 @@ class Location(userSelection: Int) extends Serializable with Logging{
    * @return true if tweet location is inside desired area of interest
    */
   def checkLocation(tweet: twitter4j.Status): Boolean = {
-    
-     //if i have geoLocation value
-     if(tweet.getGeoLocation !=null){
-      
-       if(  latitudeInBox(tweet.getGeoLocation.getLatitude) 
-             && longitudeInBox(tweet.getGeoLocation.getLongitude)  ) true
-       else false 
-     }
-     else{
-       
-       //if i have Place value
-       if(tweet.getPlace !=null){
-           if(  latitudeInBox(tweet.getPlace.getBoundingBoxCoordinates.head.head.getLatitude) 
-                 && longitudeInBox(tweet.getPlace.getBoundingBoxCoordinates.head.head.getLongitude)  ) true
-           else false 
-       
-       }else false
-     }
-
+    try {
+       //if i have geoLocation value
+       if(tweet.getGeoLocation != null) {
+         if(latitudeInBox(tweet.getGeoLocation.getLatitude) 
+            && longitudeInBox(tweet.getGeoLocation.getLongitude)) true
+         else false 
+       }
+       else{
+         //if i have Place value
+         if (tweet.getPlace != null) {
+             if (latitudeInBox(tweet.getPlace.getBoundingBoxCoordinates.head.head.getLatitude) 
+                && longitudeInBox(tweet.getPlace.getBoundingBoxCoordinates.head.head.getLongitude)) true
+             else false 
+         } else false
+       }
+    }
+    catch {
+      case e: Exception => false
+    }
   
   }// end checkLocation method //
 

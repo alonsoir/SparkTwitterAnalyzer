@@ -78,8 +78,8 @@ class TweetStreamingApp(locationToObserve : String) extends TweetApp("streaming"
     
     val myLocation = new Location(augmentString(locationToObserve).toInt)
     
-    //optionally set word filters on input data
-    val filters = new Array[String](1)
+       //optionally set word filters on input data
+    val filters = new Array[String](0)
     
     
     
@@ -89,7 +89,7 @@ class TweetStreamingApp(locationToObserve : String) extends TweetApp("streaming"
     
     //input tweets 
     /*<<< INFO >>>*/ logInfo("Opening Twitter stream...")
-    val streamTweets = TwitterUtils.createStream(ssc, None)    
+    val streamTweets = TwitterUtils.createStream(ssc, None, filters, StorageLevel.MEMORY_ONLY_SER)    
     /*<<< INFO >>>*/ logInfo("Stream opened!")
 
     

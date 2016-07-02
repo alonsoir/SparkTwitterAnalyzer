@@ -26,7 +26,13 @@ object ContextHandler extends Logging {
   /*<<<INFO>>>*/ logInfo("creating SPARK Contexts...")
   
   //SPARK contexts creation
-  private val sc = new SparkContext(new SparkConf().setAppName("SPARK Twitter Analyzer").setMaster("local[*]").set("spark.cassandra.connection.host", "slnosqllab02.localdomain"))
+ private val conf = new SparkConf()
+                         .set("spark.serializer", "org.apache.spark.serializer.KryoSerializer")
+                         .set("spark.cassandra.connection.host", "slnosqllab02.localdomain")
+                         .registerKryoClasses(Array(   classOf[DataStorer], 
+                                                       classOf[scala.collection.mutable.WrappedArray$ofRef] ))
+                                                       
+  private val sc = new SparkContext(conf)
   private val sqlContext = new SQLContext(sc)
   private val sqlContextHIVE = new HiveContext(sc)
   
